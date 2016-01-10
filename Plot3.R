@@ -1,0 +1,12 @@
+plotdata<-read.table("household_power_consumption.txt",header=TRUE,sep=";",na.strings=c("NA","?"))
+plotdata[,1]<-as.Date(strptime(plotdata[,1],"%d/%m/%Y"))
+date1<-as.Date("2007-02-01")
+date2<-as.Date("2007-02-02")
+plotdata2<-plotdata[plotdata$Date>=date1 & plotdata$Date<=date2,]
+plotdata2<-transform(plotdata2,timestamp=as.POSIXct(paste(Date,Time)))
+png(file="plot3.png",width=480,height=480)
+plot(plotdata2$timestamp,plotdata2$Sub_metering_1,type="l",xlab="",ylab="Energy Sub Metering")
+lines(plotdata2$timestamp,plotdata2$Sub_metering_2, col="red")
+lines(plotdata2$timestamp,plotdata2$Sub_metering_3, col="blue")
+legend("topright",col=c("black","red","blue"),c("Sub Metering 1","Sub Metering 2","Sub Metering 3"),lty=c(1,1,1),lwd=c(1,1,1))
+dev.off()
